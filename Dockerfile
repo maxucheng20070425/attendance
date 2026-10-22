@@ -11,6 +11,10 @@ RUN rm -rf /usr/local/tomcat/webapps/ROOT \
 # Copy the war file into Tomcat's webapps folder
 COPY attendance.war /usr/local/tomcat/webapps/attendance.war
 
+# Friendly root URL: https://<service>.onrender.com/ redirects to /attendance/
+RUN mkdir -p /usr/local/tomcat/webapps/ROOT && \
+    printf '%s' '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Simple Attendance by Seat Id</title><meta http-equiv="refresh" content="0; url=/attendance/"></head><body><a href="/attendance/">Simple Attendance by Seat Id</a></body></html>' > /usr/local/tomcat/webapps/ROOT/index.html
+
 # Use an entry point that adapts the port to Render's PORT variable
 COPY entrypoint.sh /usr/local/tomcat/bin/entrypoint.sh
 RUN chmod +x /usr/local/tomcat/bin/entrypoint.sh
